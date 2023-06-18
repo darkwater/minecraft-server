@@ -14,10 +14,6 @@ pub enum State {
     Login,
 }
 
-pub trait PacketId {
-    fn packet_id(&self) -> i32;
-}
-
 pub trait Encodable: Sized {
     fn encode(&self, dest: &mut BytesMut);
 }

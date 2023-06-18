@@ -4,9 +4,10 @@ use tokio::{io::BufReader, net::TcpStream};
 use tokio_util::codec::Decoder;
 
 use crate::protocol::{
-    data_types::Chat,
     codec::PacketCodec,
+    data_types::Chat,
     packets::status::{
+        ping::CbPongResponse,
         status::{
             CbStatusResponse, SbStatusRequest, StatusResponse, StatusResponsePlayers,
             StatusResponseVersion,
@@ -44,9 +45,18 @@ pub async fn handle(stream: BufReader<TcpStream>) -> Result<()> {
 
                 let response = serde_json::to_string(&response).unwrap().into();
 
-                framed.send(CbStatusPacket::StatusResponse(CbStatusResponse {
-                    response,
-                })).await?;
+                framed
+                    .send(CbStatusPacket::StatusResponse(CbStatusResponse {
+                        response,
+                    }))
+                    .await?;
+            }
+            SbStatusPacket::PingRequest(req) => {
+                framed
+                    .send(CbStatusPacket::PongResponse(CbPongResponse {
+                        payload: req.payload,
+                    }))
+                    .await?;
             }
         }
     }

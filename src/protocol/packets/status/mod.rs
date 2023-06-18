@@ -1,3 +1,4 @@
+pub mod ping;
 pub mod status;
 
 use bytes::BytesMut;
@@ -7,13 +8,17 @@ use crate::protocol::{
     Decodable, DecodeError, Encodable,
 };
 
-use self::status::{CbStatusResponse, SbStatusRequest};
+use self::{
+    ping::{CbPongResponse, SbPingRequest},
+    status::{CbStatusResponse, SbStatusRequest},
+};
 
 use super::UncompressedPacket;
 
 #[derive(Debug)]
 pub enum CbStatusPacket {
     StatusResponse(CbStatusResponse),
+    PongResponse(CbPongResponse),
 }
 
 impl From<CbStatusPacket> for UncompressedPacket {
@@ -24,6 +29,10 @@ impl From<CbStatusPacket> for UncompressedPacket {
             CbStatusPacket::StatusResponse(r) => {
                 r.encode(&mut data);
                 0x00
+            }
+            CbStatusPacket::PongResponse(r) => {
+                r.encode(&mut data);
+                0x01
             }
         };
 
@@ -37,6 +46,7 @@ impl From<CbStatusPacket> for UncompressedPacket {
 #[derive(Debug)]
 pub enum SbStatusPacket {
     StatusRequest(SbStatusRequest),
+    PingRequest(SbPingRequest),
 }
 
 impl TryFrom<UncompressedPacket> for SbStatusPacket {
@@ -45,6 +55,7 @@ impl TryFrom<UncompressedPacket> for SbStatusPacket {
     fn try_from(packet: UncompressedPacket) -> Result<Self, Self::Error> {
         match packet.packet_id.0 {
             0x00 => SbStatusRequest::decode(packet.data.0).map(Self::StatusRequest),
+            0x01 => SbPingRequest::decode(packet.data.0).map(Self::PingRequest),
             _ => Err(DecodeError::Invalid),
         }
     }

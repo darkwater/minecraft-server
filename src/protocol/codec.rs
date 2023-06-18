@@ -35,13 +35,12 @@ impl<S: TryFrom<UncompressedPacket, Error = DecodeError>, C> Decoder for PacketC
     fn decode(&mut self, mut src: &mut bytes::BytesMut) -> Result<Option<Self::Item>, Self::Error> {
         tracing::trace!("src: {src:?}~");
 
-        let packet = UncompressedPacket::decode(&mut src)?;
-        let res = S::try_from(packet);
+        let packet = UncompressedPacket::decode(&mut src);
 
-        if matches!(res, Err(DecodeError::TooShort)) {
+        if matches!(packet, Err(DecodeError::TooShort)) {
             Ok(None)
         } else {
-            res.map(Some)
+            S::try_from(packet?).map(Some)
         }
     }
 }

@@ -1,9 +1,10 @@
 use bytes::Bytes;
 use serde::{Serialize, Deserialize};
 
-mod varint;
+mod varints;
 mod position;
 mod string;
+mod primitives;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Boolean(pub bool);

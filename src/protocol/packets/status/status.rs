@@ -2,7 +2,7 @@ use serde::Serialize;
 
 use crate::protocol::{
     data_types::{Chat, McString},
-    Decodable, Encodable, PacketId,
+    Decodable, Encodable, 
 };
 
 #[derive(Debug)]
@@ -17,12 +17,6 @@ impl Decodable for SbStatusRequest {
 #[derive(Debug)]
 pub struct CbStatusResponse {
     pub response: McString<16384>,
-}
-
-impl PacketId for CbStatusResponse {
-    fn packet_id(&self) -> i32 {
-        0x00
-    }
 }
 
 impl Encodable for CbStatusResponse {
