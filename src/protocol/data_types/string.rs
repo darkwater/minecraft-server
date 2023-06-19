@@ -5,14 +5,14 @@ use crate::protocol::{Decodable, DecodeError, Encodable};
 use super::{McString, VarInt};
 
 impl<const N: usize> Encodable for McString<N> {
-    fn encode(&self, mut dest: &mut bytes::BytesMut) {
+    fn encode(&self, dest: &mut bytes::BytesMut) {
         if self.0.len() > N {
             tracing::warn!("{} too long for McString<{}>, truncating...", self.0.len(), N);
         }
 
         let len = N.min(self.0.len());
 
-        VarInt(len as i32).encode(&mut dest);
+        VarInt(len as i32).encode(dest);
         dest.put_slice(self.0.as_bytes());
     }
 }

@@ -28,6 +28,7 @@ impl_for!(Int, get_i32, put_i32);
 impl_for!(Long, get_i64, put_i64);
 impl_for!(Float, get_f32, put_f32);
 impl_for!(Double, get_f64, put_f64);
+impl_for!(Uuid, get_u128, put_u128);
 
 impl Decodable for Boolean {
     fn decode(mut src: impl bytes::Buf) -> Result<Self, DecodeError> {

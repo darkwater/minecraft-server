@@ -1,3 +1,4 @@
+mod login;
 mod status;
 
 use anyhow::{bail, Context, Result};
@@ -28,6 +29,6 @@ pub async fn handle(sock: TcpStream) -> Result<()> {
     match next_state {
         State::Handshaking => bail!("Can't go from handshake to handshake"),
         State::Status => status::handle(framed.into_inner()).await,
-        State::Login => todo!(),
+        State::Login => login::handle(framed.into_inner()).await,
     }
 }

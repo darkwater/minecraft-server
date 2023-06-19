@@ -1,62 +1,18 @@
-pub mod ping;
-pub mod status;
+use super::macros::{define_clientbound_packet, define_serverbound_packet};
 
-use bytes::BytesMut;
+mod ping;
+#[allow(clippy::module_inception)]
+mod status;
 
-use crate::protocol::{
-    data_types::{ByteArray, VarInt},
-    Decodable, DecodeError, Encodable,
-};
+pub use ping::*;
+pub use status::*;
 
-use self::{
-    ping::{CbPongResponse, SbPingRequest},
-    status::{CbStatusResponse, SbStatusRequest},
-};
+define_clientbound_packet! { CbStatusPacket {
+    StatusResponse(CbStatusResponse) => 0x00,
+    PongResponse(CbPongResponse) => 0x01,
+}}
 
-use super::UncompressedPacket;
-
-#[derive(Debug)]
-pub enum CbStatusPacket {
-    StatusResponse(CbStatusResponse),
-    PongResponse(CbPongResponse),
-}
-
-impl From<CbStatusPacket> for UncompressedPacket {
-    fn from(value: CbStatusPacket) -> Self {
-        let mut data = BytesMut::new();
-
-        let packet_id = match value {
-            CbStatusPacket::StatusResponse(r) => {
-                r.encode(&mut data);
-                0x00
-            }
-            CbStatusPacket::PongResponse(r) => {
-                r.encode(&mut data);
-                0x01
-            }
-        };
-
-        UncompressedPacket {
-            packet_id: VarInt(packet_id),
-            data: ByteArray(data.freeze()),
-        }
-    }
-}
-
-#[derive(Debug)]
-pub enum SbStatusPacket {
-    StatusRequest(SbStatusRequest),
-    PingRequest(SbPingRequest),
-}
-
-impl TryFrom<UncompressedPacket> for SbStatusPacket {
-    type Error = DecodeError;
-
-    fn try_from(packet: UncompressedPacket) -> Result<Self, Self::Error> {
-        match packet.packet_id.0 {
-            0x00 => SbStatusRequest::decode(packet.data.0).map(Self::StatusRequest),
-            0x01 => SbPingRequest::decode(packet.data.0).map(Self::PingRequest),
-            _ => Err(DecodeError::Invalid),
-        }
-    }
-}
+define_serverbound_packet! { SbStatusPacket {
+    0x00 => StatusRequest(SbStatusRequest),
+    0x01 => PingRequest(SbPingRequest),
+}}

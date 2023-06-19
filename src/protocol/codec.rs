@@ -2,7 +2,7 @@ use std::{fmt::Debug, io, marker::PhantomData};
 
 use tokio_util::codec::{Decoder, Encoder};
 
-use super::{packets::UncompressedPacket, Decodable, DecodeError, Encodable};
+use crate::protocol::{packets::packet::UncompressedPacket, Decodable, DecodeError, Encodable};
 
 pub struct PacketCodec<S, C> {
     phantom: PhantomData<(S, C)>,
@@ -10,9 +10,7 @@ pub struct PacketCodec<S, C> {
 
 impl<S, C> PacketCodec<S, C> {
     pub fn new() -> Self {
-        Self {
-            phantom: PhantomData,
-        }
+        Self { phantom: PhantomData }
     }
 }
 

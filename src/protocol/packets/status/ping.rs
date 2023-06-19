@@ -19,7 +19,7 @@ pub struct CbPongResponse {
 }
 
 impl Encodable for CbPongResponse {
-    fn encode(&self, mut dest: &mut bytes::BytesMut) {
-        self.payload.encode(&mut dest);
+    fn encode(&self, dest: &mut bytes::BytesMut) {
+        self.payload.encode(dest);
     }
 }

@@ -9,6 +9,7 @@ pub use error::DecodeError;
 
 #[derive(Clone, Copy, Debug)]
 pub enum State {
+    #[allow(dead_code)]
     Handshaking,
     Status,
     Login,

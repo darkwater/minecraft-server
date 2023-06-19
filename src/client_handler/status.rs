@@ -7,12 +7,8 @@ use crate::protocol::{
     codec::PacketCodec,
     data_types::Chat,
     packets::status::{
-        ping::CbPongResponse,
-        status::{
-            CbStatusResponse, SbStatusRequest, StatusResponse, StatusResponsePlayers,
-            StatusResponseVersion,
-        },
-        CbStatusPacket, SbStatusPacket,
+        CbPongResponse, CbStatusPacket, CbStatusResponse, SbStatusPacket, SbStatusRequest,
+        StatusResponse, StatusResponsePlayers, StatusResponseVersion,
     },
 };
 
@@ -30,14 +26,8 @@ pub async fn handle(stream: BufReader<TcpStream>) -> Result<()> {
                         name: "1.20.1".to_string(),
                         protocol: 763,
                     },
-                    players: StatusResponsePlayers {
-                        max: 20,
-                        online: 0,
-                        sample: vec![],
-                    },
-                    description: Chat {
-                        text: "Hello, Rust!".to_string(),
-                    },
+                    players: StatusResponsePlayers { max: 20, online: 0, sample: vec![] },
+                    description: Chat { text: "Hello, Rust!".to_string() },
                     favicon: Some(String::new()),
                     enforces_secure_chat: false,
                     previews_chat: false,
@@ -46,16 +36,12 @@ pub async fn handle(stream: BufReader<TcpStream>) -> Result<()> {
                 let response = serde_json::to_string(&response).unwrap().into();
 
                 framed
-                    .send(CbStatusPacket::StatusResponse(CbStatusResponse {
-                        response,
-                    }))
+                    .send(CbStatusPacket::StatusResponse(CbStatusResponse { response }))
                     .await?;
             }
             SbStatusPacket::PingRequest(req) => {
                 framed
-                    .send(CbStatusPacket::PongResponse(CbPongResponse {
-                        payload: req.payload,
-                    }))
+                    .send(CbStatusPacket::PongResponse(CbPongResponse { payload: req.payload }))
                     .await?;
             }
         }

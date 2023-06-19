@@ -20,8 +20,8 @@ pub struct CbStatusResponse {
 }
 
 impl Encodable for CbStatusResponse {
-    fn encode(&self, mut dest: &mut bytes::BytesMut) {
-        self.response.encode(&mut dest);
+    fn encode(&self, dest: &mut bytes::BytesMut) {
+        self.response.encode(dest);
     }
 }
 

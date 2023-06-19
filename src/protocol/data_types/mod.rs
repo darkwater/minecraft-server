@@ -5,6 +5,8 @@ mod varints;
 mod position;
 mod string;
 mod primitives;
+mod optional;
+mod chat;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Boolean(pub bool);
@@ -34,7 +36,9 @@ pub struct Slot();
 pub struct NbtTag();
 pub struct Position { x: i32, z: i32, y: i16 }
 pub struct Angle(pub u8);
+#[derive(Debug)]
 pub struct Uuid(pub u128);
+#[derive(Debug)]
 pub struct Optional<T>(pub Option<T>);
 pub struct Array<T>(pub Vec<T>);
 #[derive(Debug)]

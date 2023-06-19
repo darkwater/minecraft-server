@@ -1,8 +1,7 @@
-use bytes::{BufMut, BytesMut, Buf};
-
-use crate::protocol::{Encodable, DecodeError, Decodable};
+use bytes::{Buf, BufMut, BytesMut};
 
 use super::Position;
+use crate::protocol::{Decodable, DecodeError, Encodable};
 
 fn bits(n: u64) -> u64 {
     (1 << n) - 1
@@ -43,6 +42,7 @@ impl Decodable for Position {
 }
 
 #[cfg(test)]
+#[allow(clippy::unusual_byte_groupings)]
 mod tests {
     use bytes::Buf;
 
@@ -51,12 +51,7 @@ mod tests {
     #[test]
     fn encode() {
         let mut buf = BytesMut::new();
-        Position {
-            x: 18357644,
-            z: -20882616,
-            y: 831,
-        }
-        .encode(&mut buf);
+        Position { x: 18357644, z: -20882616, y: 831 }.encode(&mut buf);
         let n = buf.get_u64();
         assert_eq!(n, 0b01000110000001110110001100_10110000010101101101001000_001100111111);
     }
