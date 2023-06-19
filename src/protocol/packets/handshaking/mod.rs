@@ -1,5 +1,4 @@
 pub use self::handshake::SbHandshake;
-
 use super::macros::define_serverbound_packet;
 
 pub mod handshake;

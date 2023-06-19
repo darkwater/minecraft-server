@@ -1,9 +1,9 @@
-use bytes::{BytesMut, Buf};
+use bytes::{Buf, BytesMut};
 
-pub mod data_types;
-pub mod packets;
 pub mod codec;
+pub mod data_types;
 pub mod error;
+pub mod packets;
 
 pub use error::DecodeError;
 

@@ -1,6 +1,6 @@
 use bytes::{Buf, BytesMut};
 
-use super::{Optional, Boolean};
+use super::{Boolean, Optional};
 use crate::protocol::{Decodable, DecodeError, Encodable};
 
 impl<T: Decodable> Optional<T> {
@@ -12,7 +12,6 @@ impl<T: Decodable> Optional<T> {
         }
     }
 }
-
 
 impl<T: Encodable> Optional<T> {
     pub fn encode_with_bool(&self, dest: &mut BytesMut) {

@@ -1,8 +1,7 @@
 use bytes::BufMut;
 
-use crate::protocol::{Decodable, DecodeError, Encodable};
-
 use super::{McString, VarInt};
+use crate::protocol::{Decodable, DecodeError, Encodable};
 
 impl<const N: usize> Encodable for McString<N> {
     fn encode(&self, dest: &mut bytes::BytesMut) {

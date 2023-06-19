@@ -7,9 +7,7 @@ pub struct SbPingRequest {
 
 impl Decodable for SbPingRequest {
     fn decode(src: impl bytes::Buf) -> Result<Self, crate::protocol::DecodeError> {
-        Ok(Self {
-            payload: Long::decode(src)?,
-        })
+        Ok(Self { payload: Long::decode(src)? })
     }
 }
 

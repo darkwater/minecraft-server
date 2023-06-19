@@ -1,4 +1,7 @@
-use crate::protocol::{data_types::{McString, UnsignedShort, Enum, VarInt}, State, Decodable};
+use crate::protocol::{
+    data_types::{Enum, McString, UnsignedShort, VarInt},
+    Decodable, State,
+};
 
 #[derive(Debug)]
 pub struct SbHandshake {
@@ -26,7 +29,7 @@ impl Decodable for SbHandshake {
 
 impl SbHandshake {
     pub fn next_state(&self) -> Option<State> {
-        match self.next_state.0.0 {
+        match self.next_state.0 .0 {
             1 => Some(State::Status),
             2 => Some(State::Login),
             _ => None,

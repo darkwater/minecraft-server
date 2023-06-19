@@ -1,8 +1,7 @@
 use bytes::BufMut;
 
-use crate::protocol::{Decodable, Encodable, DecodeError};
-
 use super::*;
+use crate::protocol::{Decodable, DecodeError, Encodable};
 
 macro_rules! impl_for {
     ($ty:ty, $get:ident, $put:ident) => {

@@ -1,13 +1,13 @@
 use bytes::Bytes;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
-mod varints;
-mod position;
-mod string;
-mod primitives;
-mod optional;
-mod chat;
 mod array;
+mod chat;
+mod optional;
+mod position;
+mod primitives;
+mod string;
+mod varints;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Boolean(pub bool);
@@ -35,7 +35,11 @@ pub struct VarLong(pub i64);
 pub struct EntityMetadata();
 pub struct Slot();
 pub struct NbtTag();
-pub struct Position { x: i32, z: i32, y: i16 }
+pub struct Position {
+    x: i32,
+    z: i32,
+    y: i16,
+}
 pub struct Angle(pub u8);
 #[derive(Debug)]
 pub struct Uuid(pub u128);

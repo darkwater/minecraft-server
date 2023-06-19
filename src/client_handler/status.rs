@@ -35,9 +35,7 @@ pub async fn handle(stream: BufReader<TcpStream>) -> Result<()> {
 
                 let response = serde_json::to_string(&response).unwrap().into();
 
-                framed
-                    .send(CbStatusResponse { response }.into())
-                    .await?;
+                framed.send(CbStatusResponse { response }.into()).await?;
             }
             SbStatusPacket::PingRequest(req) => {
                 framed

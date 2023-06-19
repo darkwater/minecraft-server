@@ -2,7 +2,7 @@ use serde::Serialize;
 
 use crate::protocol::{
     data_types::{Chat, McString},
-    Decodable, Encodable, 
+    Decodable, Encodable,
 };
 
 #[derive(Debug)]

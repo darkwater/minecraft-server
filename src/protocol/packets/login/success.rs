@@ -1,4 +1,7 @@
-use crate::protocol::{data_types::{Uuid, McString, Optional, Array}, Encodable};
+use crate::protocol::{
+    data_types::{Array, McString, Optional, Uuid},
+    Encodable,
+};
 
 #[derive(Debug)]
 pub struct CbLoginSuccess {
