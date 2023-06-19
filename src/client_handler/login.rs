@@ -5,7 +5,7 @@ use tokio_util::codec::Decoder;
 
 use crate::protocol::{
     codec::PacketCodec,
-    data_types::Chat, packets::login::{SbLoginPacket, CbLoginPacket, disconnect::CbDisconnect},
+    data_types::{Chat, Array}, packets::login::{SbLoginPacket, CbLoginPacket, CbDisconnect, CbLoginSuccess},
 };
 
 pub async fn handle(stream: BufReader<TcpStream>) -> Result<()> {
@@ -19,9 +19,17 @@ pub async fn handle(stream: BufReader<TcpStream>) -> Result<()> {
             SbLoginPacket::LoginStart(info) => {
                 tracing::info!("{} tries to connect", info.name.0);
 
-                framed.send(CbLoginPacket::Disconnect(CbDisconnect {
-                    reason: Chat { text: "Your client is not written in Rust.".to_string() },
-                })).await?;
+                if info.uuid.0.is_none() {
+                    framed.send(CbDisconnect {
+                        reason: Chat { text: "Your login packet didn't contain a UUID".to_string() },
+                    }.into()).await?;
+                }
+
+                framed.send(CbLoginSuccess {
+                    username: info.name.truncate(),
+                    uuid: info.uuid.0.unwrap(),
+                    properties: Array(vec![]),
+                }.into()).await?;
             }
         }
     }

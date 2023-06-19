@@ -7,6 +7,7 @@ mod string;
 mod primitives;
 mod optional;
 mod chat;
+mod array;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Boolean(pub bool);
@@ -40,6 +41,7 @@ pub struct Angle(pub u8);
 pub struct Uuid(pub u128);
 #[derive(Debug)]
 pub struct Optional<T>(pub Option<T>);
+#[derive(Debug)]
 pub struct Array<T>(pub Vec<T>);
 #[derive(Debug)]
 pub struct Enum<T>(pub T);

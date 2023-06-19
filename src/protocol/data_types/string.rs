@@ -39,3 +39,10 @@ impl<const N: usize> From<String> for McString<N> {
         McString(value)
     }
 }
+
+impl<const N: usize> McString<N> {
+    /// Truncation is currently actually done in the encoding part
+    pub fn truncate<const M: usize>(self) -> McString<M> {
+        McString(self.0)
+    }
+}

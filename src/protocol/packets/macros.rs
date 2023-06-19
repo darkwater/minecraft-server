@@ -31,6 +31,14 @@ macro_rules! define_clientbound_packet {
                 }
             }
         }
+
+        $(
+            impl From<$varty> for $packty {
+                fn from(value: $varty) -> Self {
+                    Self::$variant(value)
+                }
+            }
+        )*
     };
 }
 
